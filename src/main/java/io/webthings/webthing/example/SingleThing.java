@@ -17,10 +17,10 @@ import java.util.UUID;
 public class SingleThing {
     public static Thing makeThing() {
         Thing thing = new Thing("urn:dev:ops:my-lamp-1234",
-                                "My Lamp",
-                                new JSONArray(Arrays.asList("OnOffSwitch",
-                                                            "Light")),
-                                "A web connected lamp");
+                "My Lamp",
+                new JSONArray(Arrays.asList("OnOffSwitch",
+                        "Light")),
+                "A web connected lamp");
 
         JSONObject onDescription = new JSONObject();
         onDescription.put("@type", "OnOffProperty");
@@ -28,23 +28,23 @@ public class SingleThing {
         onDescription.put("type", "boolean");
         onDescription.put("description", "Whether the lamp is turned on");
         thing.addProperty(new Property(thing,
-                                       "on",
-                                       new Value(true),
-                                       onDescription));
+                "on",
+                new Value(true),
+                onDescription));
 
         JSONObject brightnessDescription = new JSONObject();
         brightnessDescription.put("@type", "BrightnessProperty");
         brightnessDescription.put("title", "Brightness");
         brightnessDescription.put("type", "integer");
         brightnessDescription.put("description",
-                                  "The level of light from 0-100");
+                "The level of light from 0-100");
         brightnessDescription.put("minimum", 0);
         brightnessDescription.put("maximum", 100);
         brightnessDescription.put("unit", "percent");
         thing.addProperty(new Property(thing,
-                                       "brightness",
-                                       new Value(50),
-                                       brightnessDescription));
+                "brightness",
+                new Value(50),
+                brightnessDescription));
 
         JSONObject fadeMetadata = new JSONObject();
         JSONObject fadeInput = new JSONObject();
@@ -55,7 +55,7 @@ public class SingleThing {
         fadeMetadata.put("description", "Fade the lamp to a given level");
         fadeInput.put("type", "object");
         fadeInput.put("required",
-                      new JSONArray(Arrays.asList("brightness", "duration")));
+                new JSONArray(Arrays.asList("brightness", "duration")));
         fadeBrightness.put("type", "integer");
         fadeBrightness.put("minimum", 0);
         fadeBrightness.put("maximum", 100);
@@ -71,7 +71,7 @@ public class SingleThing {
 
         JSONObject overheatedMetadata = new JSONObject();
         overheatedMetadata.put("description",
-                               "The lamp has exceeded its safe operating temperature");
+                "The lamp has exceeded its safe operating temperature");
         overheatedMetadata.put("type", "number");
         overheatedMetadata.put("unit", "degree celsius");
         thing.addAvailableEvent("overheated", overheatedMetadata);
@@ -87,7 +87,7 @@ public class SingleThing {
             // If adding more than one thing, use MultipleThings() with a name.
             // In the single thing case, the thing's name will be broadcast.
             server = new WebThingServer(new WebThingServer.SingleThing(thing),
-                                        8888);
+                    8888);
 
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 public void run() {

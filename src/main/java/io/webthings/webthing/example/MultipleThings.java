@@ -33,8 +33,8 @@ public class MultipleThings {
             // In the single thing case, the thing's name will be broadcast.
             WebThingServer server =
                     new WebThingServer(new WebThingServer.MultipleThings(things,
-                                                                         "LightAndTempDevice"),
-                                       8888);
+                            "LightAndTempDevice"),
+                            8888);
 
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 public void run() {
@@ -55,9 +55,9 @@ public class MultipleThings {
     public static class ExampleDimmableLight extends Thing {
         public ExampleDimmableLight() {
             super("urn:dev:ops:my-lamp-1234",
-                  "My Lamp",
-                  new JSONArray(Arrays.asList("OnOffSwitch", "Light")),
-                  "A web connected lamp");
+                    "My Lamp",
+                    new JSONArray(Arrays.asList("OnOffSwitch", "Light")),
+                    "A web connected lamp");
 
             JSONObject onDescription = new JSONObject();
             onDescription.put("@type", "OnOffProperty");
@@ -66,12 +66,12 @@ public class MultipleThings {
             onDescription.put("description", "Whether the lamp is turned on");
 
             Value<Boolean> on = new Value<>(true,
-                                            // Here, you could send a signal to
-                                            // the GPIO that switches the lamp
-                                            // off
-                                            v -> System.out.printf(
-                                                    "On-State is now %s\n",
-                                                    v));
+                    // Here, you could send a signal to
+                    // the GPIO that switches the lamp
+                    // off
+                    v -> System.out.printf(
+                            "On-State is now %s\n",
+                            v));
 
             this.addProperty(new Property(this, "on", on, onDescription));
 
@@ -80,23 +80,23 @@ public class MultipleThings {
             brightnessDescription.put("title", "Brightness");
             brightnessDescription.put("type", "integer");
             brightnessDescription.put("description",
-                                      "The level of light from 0-100");
+                    "The level of light from 0-100");
             brightnessDescription.put("minimum", 0);
             brightnessDescription.put("maximum", 100);
             brightnessDescription.put("unit", "percent");
 
             Value<Integer> brightness = new Value<>(50,
-                                                    // Here, you could send a signal
-                                                    // to the GPIO that controls the
-                                                    // brightness
-                                                    l -> System.out.printf(
-                                                            "Brightness is now %s\n",
-                                                            l));
+                    // Here, you could send a signal
+                    // to the GPIO that controls the
+                    // brightness
+                    l -> System.out.printf(
+                            "Brightness is now %s\n",
+                            l));
 
             this.addProperty(new Property(this,
-                                          "brightness",
-                                          brightness,
-                                          brightnessDescription));
+                    "brightness",
+                    brightness,
+                    brightnessDescription));
 
             JSONObject fadeMetadata = new JSONObject();
             JSONObject fadeInput = new JSONObject();
@@ -107,8 +107,8 @@ public class MultipleThings {
             fadeMetadata.put("description", "Fade the lamp to a given level");
             fadeInput.put("type", "object");
             fadeInput.put("required",
-                          new JSONArray(Arrays.asList("brightness",
-                                                      "duration")));
+                    new JSONArray(Arrays.asList("brightness",
+                            "duration")));
             fadeBrightness.put("type", "integer");
             fadeBrightness.put("minimum", 0);
             fadeBrightness.put("maximum", 100);
@@ -124,7 +124,7 @@ public class MultipleThings {
 
             JSONObject overheatedMetadata = new JSONObject();
             overheatedMetadata.put("description",
-                                   "The lamp has exceeded its safe operating temperature");
+                    "The lamp has exceeded its safe operating temperature");
             overheatedMetadata.put("type", "number");
             overheatedMetadata.put("unit", "degree celsius");
             this.addAvailableEvent("overheated", overheatedMetadata);
@@ -167,9 +167,9 @@ public class MultipleThings {
 
         public FakeGpioHumiditySensor() {
             super("urn:dev:ops:my-humidity-sensor-1234",
-                  "My Humidity Sensor",
-                  new JSONArray(Arrays.asList("MultiLevelSensor")),
-                  "A web connected humidity sensor");
+                    "My Humidity Sensor",
+                    new JSONArray(Arrays.asList("MultiLevelSensor")),
+                    "A web connected humidity sensor");
 
             JSONObject levelDescription = new JSONObject();
             levelDescription.put("@type", "LevelProperty");
@@ -182,9 +182,9 @@ public class MultipleThings {
             levelDescription.put("readOnly", true);
             this.level = new Value<>(0.0);
             this.addProperty(new Property(this,
-                                          "level",
-                                          level,
-                                          levelDescription));
+                    "level",
+                    level,
+                    levelDescription));
 
             // Start a thread that polls the sensor reading every 3 seconds
             new Thread(() -> {
@@ -195,7 +195,7 @@ public class MultipleThings {
                         // all listeners
                         double newLevel = this.readFromGPIO();
                         System.out.printf("setting new humidity level: %f\n",
-                                          newLevel);
+                                newLevel);
                         this.level.notifyOfExternalUpdate(newLevel);
                     } catch (InterruptedException e) {
                         throw new IllegalStateException(e);
