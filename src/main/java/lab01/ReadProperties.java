@@ -6,11 +6,14 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.core.json.*;
 
-
+/**
+ * come leggere le proprietà di una thing
+ */
 public class ReadProperties {
 
     static public void main(String[] args) {
 
+        // sempre presente event loop con cui le cose vengono scelte in modo non deterministico e eseguite sequenzialmente
         Vertx vertx = Vertx.vertx();
         WebClient client = WebClient.create(vertx);
 

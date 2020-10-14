@@ -14,6 +14,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
 
+/**
+ * Api permette di specificare tutte le proprietà azioni ed eventi
+ * supportati dalla thing
+ * <p>
+ * https://iot.mozilla.org/wot/#web-thing-description
+ * <p>
+ * all'avvio mi crea una lamp a porta 8888 (localhost:8888) pronta per ricevere l'input
+ */
 public class SingleThing {
     public static Thing makeThing() {
         Thing thing = new Thing("urn:dev:ops:my-lamp-1234",
@@ -27,9 +35,9 @@ public class SingleThing {
         onDescription.put("title", "On/Off");
         onDescription.put("type", "boolean");
         onDescription.put("description", "Whether the lamp is turned on");
-        thing.addProperty(new Property(thing,
+        thing.addProperty(new Property(thing, // aggiunta proprietà
                 "on",
-                new Value(true),
+                new Value(true), // valore iniziale
                 onDescription));
 
         JSONObject brightnessDescription = new JSONObject();
@@ -57,7 +65,7 @@ public class SingleThing {
         fadeInput.put("required",
                 new JSONArray(Arrays.asList("brightness", "duration")));
         fadeBrightness.put("type", "integer");
-        fadeBrightness.put("minimum", 0);
+        fadeBrightness.put("minimum", 0); // constrains, bad request se passo parametri a caso
         fadeBrightness.put("maximum", 100);
         fadeBrightness.put("unit", "percent");
         fadeDuration.put("type", "integer");
@@ -67,7 +75,7 @@ public class SingleThing {
         fadeProperties.put("duration", fadeDuration);
         fadeInput.put("properties", fadeProperties);
         fadeMetadata.put("input", fadeInput);
-        thing.addAvailableAction("fade", fadeMetadata, FadeAction.class);
+        thing.addAvailableAction("fade", fadeMetadata, FadeAction.class); // specifico il nome, metadata e la classa che rappresenta l'azione
 
         JSONObject overheatedMetadata = new JSONObject();
         overheatedMetadata.put("description",
@@ -108,11 +116,33 @@ public class SingleThing {
         }
     }
 
+    /**
+     * Con postman faccio una post localhost:8888/actions/fade
+     * nel body i parametri delle action
+     * {
+     *     "fade": {
+     *         "input": {
+     *             "brightness": 100,
+     *             "duration": 1000
+     *         }
+     *     }
+     * }
+     */
     public static class FadeAction extends Action {
+
+        /**
+         *
+         * @param thing
+         * @param input descrizione dei parametri in input
+         */
         public FadeAction(Thing thing, JSONObject input) {
             super(UUID.randomUUID().toString(), thing, "fade", input);
         }
 
+        /**
+         * incapsula il comportamento
+         * NB. non ha un tipo di ritorno
+         */
         @Override
         public void performAction() {
             Thing thing = this.getThing();
@@ -124,6 +154,8 @@ public class SingleThing {
 
             try {
                 thing.setProperty("brightness", input.getInt("brightness"));
+                // viene generato un evento, delle observable information
+                // localhost:8888/events posso richiedere lo storico eventi generati
                 thing.addEvent(new OverheatedEvent(thing, 102));
             } catch (PropertyError e) {
             }

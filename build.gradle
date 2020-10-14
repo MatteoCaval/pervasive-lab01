@@ -27,18 +27,20 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 
-	compile group: 'org.everit.json', name: 'org.everit.json.schema', version: '1.5.1'
-	compile group: 'javax.jmdns', name: 'jmdns', version: '3.4.1'
-	compile group: 'org.nanohttpd', name: 'nanohttpd', version: '2.3.1'
+    compile group: 'org.everit.json', name: 'org.everit.json.schema', version: '1.5.1'
+    compile group: 'javax.jmdns', name: 'jmdns', version: '3.4.1'
+    compile group: 'org.nanohttpd', name: 'nanohttpd', version: '2.3.1'
+    // nanohttp : non usare se si riesce a specificare la dipendenza a webthing,
+    // Ricci non ci è riuscito e quindi ha tirato dentro la libreria
     compile group: 'org.nanohttpd', name: 'nanohttpd-websocket', version: '2.3.1'
-	compile group: 'org.nanohttpd', name: 'nanohttpd-nanolets', version: '2.3.1'
+    compile group: 'org.nanohttpd', name: 'nanohttpd-nanolets', version: '2.3.1'
 
-	// vert.x
-  	compile "io.vertx:vertx-core:3.9.3"
-  	compile "io.vertx:vertx-web:3.9.3"
-  	compile "io.vertx:vertx-web-client:3.9.3"
-  	compile "io.vertx:vertx-sync:3.9.3"
-  	compile "io.vertx:vertx-unit:3.9.3"
-	compile "io.vertx:vertx-mqtt:3.9.3"
+    // vert.x
+    compile "io.vertx:vertx-core:3.9.3"
+    compile "io.vertx:vertx-web:3.9.3"
+    compile "io.vertx:vertx-web-client:3.9.3"
+    compile "io.vertx:vertx-sync:3.9.3"
+    compile "io.vertx:vertx-unit:3.9.3"
+    compile "io.vertx:vertx-mqtt:3.9.3"
 
 }

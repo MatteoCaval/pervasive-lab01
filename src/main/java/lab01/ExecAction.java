@@ -9,10 +9,13 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.core.json.*;
 
-
+/**
+ * verticle per creare un'azione
+ *
+ */
 class MyAgent extends AbstractVerticle {
 	
-	private String actionResultURI;
+	private String actionResultURI; // usato per salvare action result uri
 	
 	public MyAgent() {
 	}
@@ -33,7 +36,7 @@ class MyAgent extends AbstractVerticle {
 		client
 		  .post(8888, "localhost", "/actions/fade")
 		  .sendJson(msg, promiseActReq);
-		
+
 		Future futActReq = promiseActReq.future().onComplete(ar -> {
 		    if (ar.succeeded()) {
 			      HttpResponse<Buffer> response = ar.result();
@@ -50,14 +53,16 @@ class MyAgent extends AbstractVerticle {
 		
 		Promise<HttpResponse<Buffer>> actionResPromise = Promise.promise();
 
+		// faccio una get quando ho ottenuto l'informazione sull'uri con il risultato
 		futActReq.onComplete(ar -> {
 		      log("Action Result URI: " + actionResultURI);
 		      log("Retrieving Action status...");
 			  client
-				  .get(8888, "localhost", actionResultURI)
+				  .get(8888, "localhost", actionResultURI) // richiesto lo stato dell'azione
 				  .send(actionResPromise);
 		});
-		
+
+		// stampo lo stato dell'azione
 		Future futActResult = actionResPromise.future().onComplete(ar -> {
 			HttpResponse<Buffer> response = ar.result();
 		    if (ar.succeeded()) {

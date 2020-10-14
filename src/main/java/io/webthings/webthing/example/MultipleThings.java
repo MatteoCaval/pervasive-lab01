@@ -16,6 +16,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * crea light e sensor
+ * <p>
+ * per interagire con una thing specifica devo passare un index
+ * es. get a localhost:8888/1
+ */
 public class MultipleThings {
     public static void main(String[] args) {
         // Create a thing that represents a dimmable light
